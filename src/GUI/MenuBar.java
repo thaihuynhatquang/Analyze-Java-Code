@@ -10,6 +10,15 @@ import java.awt.event.*;
 import java.io.File;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import GUI.MainPanel.*;
+import java.awt.AWTException;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 /**
  *
  * @author Administrator
@@ -83,7 +92,17 @@ public class MenuBar extends JMenuBar{
                 } else {
                     System.out.println("Open command cancelled by user." + "\n");
                 }
+            }else if(e.getSource() == saveMenuItem){
+                System.out.println(e.getActionCommand() + " JMenuItem clicked.");
+                try{
+                    Component mainPanel;
+                        ImageIO.write(ExportImage.getScreenShot(MainPanel.getMainPanel()),"jpg",new File("exportImage.jpg"));
+                    }
+                    catch(IOException ex){
+                        Logger.getLogger(MainWindow.class.getName());
+                    }
             }
+            else
             System.out.println(e.getActionCommand() + " JMenuItem clicked.");
         }    
     }

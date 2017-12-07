@@ -7,9 +7,13 @@ package GUI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,22 +32,19 @@ public class MainWindow extends JFrame {
         JFrame myFrame=new JFrame(" Class Diagram ");
         myFrame.setSize(800,600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        myFrame.setLocation(dim.width/2 - myFrame.getSize().width/2, 
-                dim.height/2 - myFrame.getSize().height/2);
+        myFrame.setLocation(dim.width/2 - myFrame.getSize().width/2, dim.height/2 - myFrame.getSize().height/2);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setVisible(true);
-
-        MainPanel mainPanel = new MainPanel();
-        //Hàm này đang test cái class Panel swap nè, đừng quan tâm ._.
-//        PanelSwap panelSwap = new PanelSwap();
+        
+        MainPanel mainPanel = MainPanel.getMainPanel();
+        mainPanel.setLayout(null);
         JScrollPane scroll = new JScrollPane(mainPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         myFrame.add(scroll);
-        
         MenuBar mb = new MenuBar();
         myFrame.setJMenuBar(mb);
 //        myFrame.pack(); 
-
+        
     }
     public static void main(String[] args) {
          try{ 

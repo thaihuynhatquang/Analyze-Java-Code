@@ -6,6 +6,7 @@
 package GUI;
 
 import Analyze.NodeInfo;
+import Analyze.Variable;
 import java.awt.Rectangle;
 
 /**
@@ -21,8 +22,17 @@ public class Box {
         this.data=data;
         rec=new Rectangle();
         this.rec.setSize(250, setHeight());
-    }
+        
     
+    }
+    public boolean hasA(Box box){
+        for(Variable var: data.getVariables()){
+                String varType =var.getType();
+                if(varType.contains(box.getData().getNameOfNode()))
+                    return true;
+        }
+        return false;
+    }
     public void setLocationOfRec(int x,int y){
         rec.setLocation(x, y);
     }
@@ -31,7 +41,7 @@ public class Box {
     }
     public int setHeight(){
         int Height=0;
-        Height = data.getConstructors().size()+data.getMethods().size()+data.getVariables().size()+2;
+        Height=data.getConstructors().size()+data.getMethods().size()+data.getVariables().size()+2;
         return Height*20;
     }
 
