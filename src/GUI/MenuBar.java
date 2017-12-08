@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import javax.swing.*;
@@ -14,10 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+
 /**
  *
  * @author Administrator
  */
+
 public class MenuBar extends JMenuBar{
     JMenu fileMenu = new JMenu("File");
     JMenuItem openMenuItem = new JMenuItem("Open folder");

@@ -1,20 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Coefficient;
+package GUI;
 
 /**
  *
- * @author admin
+ * @author Administrator
  */
-public class Constants {
-    private static  int rowHeight=25;
-    private static  int columnWidth=250;
-    private static  int distanceBoxes=50;
-    private static  int typeOfNodeSize=10;
-    private static  int contentSize=15;
+
+public class ConstantAtribute {
+    private static int rowHeight=25;
+    private static int columnWidth=250;
+    private static int distanceBoxes=50;
+    private static int typeOfNodeSize=10;
+    private static int contentSize=15;
     private static double factor=1.1;
     public static void zoomIn(){
         rowHeight*=factor;
@@ -54,7 +50,4 @@ public class Constants {
     public static int getDistanceBoxes() {
         return distanceBoxes;
     }
-    
-    
-    
 }

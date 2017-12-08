@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import java.awt.BasicStroke;
@@ -19,8 +14,9 @@ import java.util.HashMap;
 
 /**
  *
- * @author admin
+ * @author Administrator
  */
+
 public class DrawRelation {
     private HashMap<String, Box> listBox;
     AffineTransform tx = new AffineTransform();

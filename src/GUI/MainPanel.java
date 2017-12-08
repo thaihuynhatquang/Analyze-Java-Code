@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
+
 import Analyze.AnalyzeFile;
 import Analyze.NodeInfo;
-import Coefficient.Constants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -23,8 +17,9 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Tung Duong
+ * @author Administrator
  */
+
 public class MainPanel extends JPanel implements MouseListener, MouseMotionListener{
     private HashMap<String, Box> listBox;
     private static MainPanel main;
@@ -81,17 +76,17 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
         if(isZoomIn){
             for(Box index: listBox.values()){
-            index.getRec().x*=Constants.getFactor();
-            index.getRec().y*=Constants.getFactor();
-            index.getRec().width*=Constants.getFactor();
-            index.getRec().height*=Constants.getFactor();
+            index.getRec().x*=ConstantAtribute.getFactor();
+            index.getRec().y*=ConstantAtribute.getFactor();
+            index.getRec().width*=ConstantAtribute.getFactor();
+            index.getRec().height*=ConstantAtribute.getFactor();
             }}
         else{
              for(Box index: listBox.values()){
-            index.getRec().x/=Constants.getFactor();
-            index.getRec().y/=Constants.getFactor();
-            index.getRec().width/=Constants.getFactor();
-            index.getRec().height/=Constants.getFactor();
+            index.getRec().x/=ConstantAtribute.getFactor();
+            index.getRec().y/=ConstantAtribute.getFactor();
+            index.getRec().width/=ConstantAtribute.getFactor();
+            index.getRec().height/=ConstantAtribute.getFactor();
             }       
         }           
 
@@ -150,8 +145,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             int evenDistance=0;
             Point evenPoint=new Point();
             Point oddPoint=new Point();
-            int distanceBoxes=Constants.getDistanceBoxes();
-            int columnWidth=Constants.getColumnWidth();
+            int distanceBoxes=ConstantAtribute.getDistanceBoxes();
+            int columnWidth=ConstantAtribute.getColumnWidth();
             for(Box index: listBox.values()){
                 if(0!=count%2){
                     count++;
@@ -203,7 +198,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     public void mouseClicked(MouseEvent e) {
         if(SwingUtilities.isLeftMouseButton(e)){
             if(e.getClickCount() == 2){
-                Constants.zoomIn();
+                ConstantAtribute.zoomIn();
                 updateListDrawBox(true);
                 
             //    setComponentZOrder(this, 0); 
@@ -220,7 +215,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         }
         if(SwingUtilities.isRightMouseButton(e)){
             if(e.getClickCount() == 2){
-                Constants.zoomOut();
+                ConstantAtribute.zoomOut();
                 updateListDrawBox(false);
             //    setComponentZOrder(this, 0);
                 getTopLevelAncestor().repaint();

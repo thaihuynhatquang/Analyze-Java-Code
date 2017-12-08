@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import Analyze.NodeInfo;
-import Coefficient.Constants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -23,8 +16,9 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Tung Duong
+ * @author Administrator
  */
+
 public class DrawBox extends JPanel implements MouseListener,MouseMotionListener {
     private Box box;
     Point ChoosedPoint;
@@ -65,10 +59,10 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
     }
     
     void addContent(){
-        setLayout(new GridLayout(box.getRec().height/Constants.getRowHeight(),1));
+        setLayout(new GridLayout(box.getRec().height/ConstantAtribute.getRowHeight(),1));
         setOpaque(false);
         NodeInfo data=box.getData();
-        int contentSize=Constants.getContentSize();
+        int contentSize=ConstantAtribute.getContentSize();
         
         // Name of Node
 
@@ -119,7 +113,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
     public void mouseClicked(MouseEvent e) {
         if(SwingUtilities.isLeftMouseButton(e)){
             if(e.getClickCount() == 2){
-                Constants.zoomIn();
+                ConstantAtribute.zoomIn();
                 MainPanel.getMainPanel().updateListDrawBox(true);
                 MainPanel.getMainPanel().setComponentZOrder(this, 0); 
                 MainPanel.getMainPanel().addContent();
@@ -136,7 +130,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         }
         if(SwingUtilities.isRightMouseButton(e)){
             if(e.getClickCount() == 2){
-                Constants.zoomOut();
+                ConstantAtribute.zoomOut();
                 MainPanel.getMainPanel().updateListDrawBox(false);
                 MainPanel.getMainPanel().setComponentZOrder(this, 0);
                 getTopLevelAncestor().repaint();
