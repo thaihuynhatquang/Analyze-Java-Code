@@ -11,8 +11,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWindow{
     public static void main(String[] args) {
-         try{ 
-            com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Green", "", "Team Q - D -H");
+         try{
+            com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Default", "", "QDH TEAM");
             UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
         } 
         catch(ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e){ 

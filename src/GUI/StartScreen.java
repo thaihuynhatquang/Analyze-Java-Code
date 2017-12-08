@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.border.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -19,7 +18,7 @@ public class StartScreen extends JFrame{
     private JPanel contentPanel;
     private JLabel information;
     private JPanel buttonBar;
-    private JButton button1;
+    private JButton chooserButton;
     private JButton okButton;
     private JButton cancelButton;
     
@@ -34,16 +33,15 @@ public class StartScreen extends JFrame{
         contentPanel = new JPanel();
         information = new JLabel();
         buttonBar = new JPanel();
-        button1 = new JButton();
+        chooserButton = new JButton();
         okButton = new JButton();
         cancelButton = new JButton();
 
-        //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        //======== contentPanel ========
+        //contentPanel
         contentPanel.setBorder(new javax.swing.border.CompoundBorder(
             new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
                 "Analyze Your Source Code", javax.swing.border.TitledBorder.CENTER,
@@ -56,9 +54,7 @@ public class StartScreen extends JFrame{
         contentPanelLayout.setHorizontalGroup(
             contentPanelLayout.createParallelGroup()
                 .addGroup(contentPanelLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(information, GroupLayout.DEFAULT_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(110, Short.MAX_VALUE))
+                    .addComponent(information, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup()
@@ -68,30 +64,27 @@ public class StartScreen extends JFrame{
         );
         contentPane.add(contentPanel, BorderLayout.CENTER);
 
-        //======== buttonBar ========
+        //buttonBar
         {
             buttonBar.setBorder(new EmptyBorder(0, 0, 0, 0));
             buttonBar.setLayout(new GridBagLayout());
             ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 60, 85};
             ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0};
-
-            //---- button1 ----
-            button1.setText("CHOOSE LOCATION OF YOUR SOURCE CODE");
-            button1.addActionListener(e -> {
+            
+            chooserButton.setText("CHOOSE LOCATION OF YOUR SOURCE CODE");
+            chooserButton.addActionListener(e -> {
 			clickChooseFolderPath(e);
 		});
-            buttonBar.add(button1, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+            buttonBar.add(chooserButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
-
-            //---- okButton ----
+            
             okButton.setText("OK");
             okButton.addActionListener(e -> clickOk(e));
             buttonBar.add(okButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
-            //---- cancelButton ----
             cancelButton.setText("Cancel");
             cancelButton.addActionListener(e -> clickCancel(e));
             buttonBar.add(cancelButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
@@ -120,8 +113,7 @@ public class StartScreen extends JFrame{
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             folder = chooser.getSelectedFile();
-            information.setText(folder.getAbsolutePath());
-//                    GUI.MainPanel.folderPath = chooser.getSelectedFile().getPath();;
+            information.setText("Current path: " + folder.getAbsolutePath());
             System.out.println("getSelectedFolder() : " +  chooser.getSelectedFile());
         }
     }
@@ -132,7 +124,7 @@ public class StartScreen extends JFrame{
             JOptionPane.showMessageDialog(null,"Choose your location of source code","ERROR!",1);
         }else {
             AnalyzeFile analyzeFile = new AnalyzeFile(folder.getAbsolutePath());
-            if(analyzeFile.getListNode().size() == 0){
+            if(analyzeFile.getListNode().isEmpty()){
                 JOptionPane.showMessageDialog(null,"Folder hasn't any java file","Error!!",1);
             }else {
                 setVisible(false);
@@ -140,19 +132,37 @@ public class StartScreen extends JFrame{
                 JFrame myFrame=new JFrame(" Class Diagram ");
                 myFrame.setSize(800,600);
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-                myFrame.setLocation(dim.width/2 - myFrame.getSize().width/2, dim.height/2 - myFrame.getSize().height/2);
+                myFrame.setLocation(dim.width/2 - myFrame.getSize().width/2, 
+                        dim.height/2 - myFrame.getSize().height/2);
                 myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 myFrame.setVisible(true);
                 MainPanel mainPanel = MainPanel.getMainPanel();
                 mainPanel.init(folder.getPath());
-                JScrollPane scroll = new JScrollPane(mainPanel,
+                JScrollPane scroller = new JScrollPane(mainPanel,
                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                myFrame.add(scroll);
+                scroller.removeMouseWheelListener(scroller
+                        .getMouseWheelListeners()[0]);
+                scroller.addMouseWheelListener(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(final MouseWheelEvent e) {
+                        if (e.isShiftDown()) {
+                            // Horizontal scrolling
+                            Adjustable adj = scroller.getHorizontalScrollBar();
+                            int scroll = e.getUnitsToScroll() * adj.getBlockIncrement();
+                            adj.setValue(adj.getValue() + scroll);
+                        } else {
+                            // Vertical scrolling
+                            Adjustable adj = scroller.getVerticalScrollBar();
+                            int scroll = e.getUnitsToScroll() * adj.getBlockIncrement();
+                            adj.setValue(adj.getValue() + scroll);
+                        }
+                    }
+                });
+                myFrame.add(scroller);
                 MenuBar mb = new MenuBar();
                 myFrame.setJMenuBar(mb);
-                System.out.println("HIHI");
             }
         }
-    }   
+    }
 }

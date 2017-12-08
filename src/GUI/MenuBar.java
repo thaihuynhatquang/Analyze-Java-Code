@@ -16,20 +16,13 @@ import javax.imageio.ImageIO;
  */
 
 public class MenuBar extends JMenuBar{
-    JMenu fileMenu = new JMenu("File");
-    JMenuItem openMenuItem = new JMenuItem("Open folder");
+    JMenu menu = new JMenu("Action");
     JMenuItem saveMenuItem = new JMenuItem("Save as image");
-    JMenuItem clearMenuItem = new JMenuItem("Clear");
     JMenuItem exitMenuItem = new JMenuItem("Exit");
     JMenuItem sortMenuItem = new JMenuItem("Auto Sorting");
     
     public void addMenuItem(){
-      
-      openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-      openMenuItem.setMnemonic(KeyEvent.VK_O);
-      openMenuItem.setActionCommand("Open");
 
-      
       saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
       saveMenuItem.setMnemonic(KeyEvent.VK_S);
       saveMenuItem.setActionCommand("Save");
@@ -39,35 +32,27 @@ public class MenuBar extends JMenuBar{
       sortMenuItem.setActionCommand("Auto Sorting");
       
       
-      clearMenuItem.setMnemonic(KeyEvent.VK_C);
-      clearMenuItem.setActionCommand("Clear");
-      
-      
       exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
       exitMenuItem.setMnemonic(KeyEvent.VK_X);
       exitMenuItem.setActionCommand("Exit");
       
       MenuItemListener menuItemListener = new MenuItemListener();
-      clearMenuItem.addActionListener(menuItemListener);
-      openMenuItem.addActionListener(menuItemListener);
       saveMenuItem.addActionListener(menuItemListener);
       sortMenuItem.addActionListener(menuItemListener);
       exitMenuItem.addActionListener(menuItemListener);
       
       
       //Add item to Menu Bar
-      fileMenu.add(openMenuItem);
-      fileMenu.add(clearMenuItem);
-      fileMenu.add(saveMenuItem);
-      fileMenu.add(sortMenuItem);
-      fileMenu.add(exitMenuItem);
+      menu.add(saveMenuItem);
+      menu.add(sortMenuItem);
+      menu.add(exitMenuItem);
 }
     
     public MenuBar() {
         addMenuItem();
-        fileMenu.setMnemonic(KeyEvent.VK_F);
+        menu.setMnemonic(KeyEvent.VK_A);
         //Add Menu Bar to JFrame
-        this.add(fileMenu);
+        this.add(menu);
     }
     
     class MenuItemListener implements ActionListener {
@@ -76,22 +61,6 @@ public class MenuBar extends JMenuBar{
             if(e.getSource() == exitMenuItem){
                 System.out.println(e.getActionCommand() + " JMenuItem clicked.");
                 System.exit(0);
-            }else if(e.getSource() == openMenuItem){
-                System.out.println(e.getActionCommand() + " JMenuItem clicked.");
-                JFileChooser chooser = new JFileChooser();
-                chooser.setDialogTitle("Open");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                // disable the "All files" option.
-                chooser.setAcceptAllFileFilterUsed(false);
-                // only folder can be displayed
-                chooser.setFileFilter(new FileNameExtensionFilter("Properties file", "properties"));
-                int returnVal = chooser.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                    GUI.MainPanel.folderPath = chooser.getSelectedFile().getPath();
-                    System.out.println("getSelectedFolder() : " +  chooser.getSelectedFile());
-                } else {
-                    System.out.println("Open command cancelled by user." + "\n");
-                }
             }else if(e.getSource() == saveMenuItem){
                 //Capture Image
                 System.out.println(e.getActionCommand() + " JMenuItem clicked.");

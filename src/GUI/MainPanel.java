@@ -25,6 +25,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static MainPanel main;
     private static ArrayList<DrawBox> listDrawBox=new ArrayList<>();
     private static String temp;
+    
     public static MainPanel getMainPanel(){
         if(main==null){
             main=new MainPanel();
@@ -38,18 +39,16 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     }
     
     MainPanel() {
-        listBox=new HashMap<>();
-//        setLayout(null);
-//        setListBox(folderPath);
-//        setListDrawBox();
-//        addContent();
-//        addMouseListener(this );
-//        addMouseMotionListener(this);
-        
+        listBox=new HashMap<>();        
     }
     
     public void init(String folderPath){
-        
+        if(temp != folderPath){
+            main.listBox.clear();
+            listDrawBox.clear();
+            AnalyzeFile.listNode.clear();
+            temp = folderPath;
+        }else System.out.println("HI");
         setLayout(null);
         setListBox(folderPath);
         setListDrawBox();
@@ -73,7 +72,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     }
     
     public void updateListDrawBox(boolean isZoomIn){
-
         if(isZoomIn){
             for(Box index: listBox.values()){
             index.getRec().x*=ConstantAtribute.getFactor();
@@ -102,13 +100,17 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         super.paintComponent(g); 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getPreferredSize().width, getPreferredSize().height);
-        g.setColor(Color.RED);
-        DrawRelation newDrawRelation=new DrawRelation(listBox);
+        g.setColor(Color.WHITE);
+        DrawRelation newDrawRelation = new DrawRelation(listBox);
         newDrawRelation.draw(g);
     }
+    
+    
+    
     public HashMap<String, Box> getListBox() {
         return listBox;
     }
+    
     @Override
     public Dimension getPreferredSize() {
         int maxX=0;
@@ -120,7 +122,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             if(maxY<y) maxY=y;
         }
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        if(dim.getWidth() < maxX+100 && dim.getHeight() < maxY+100) return new Dimension(maxX+100,maxY+100);
+        if(dim.getWidth() < maxX+200 && dim.getHeight() < maxY+200) 
+            return new Dimension(maxX+100,maxY+100);
         else return dim;
     }
     
@@ -129,6 +132,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             add(index);
         }
     }
+    
     public void setListBox(String folderPath) {  
         try {
             temp = folderPath;
@@ -140,7 +144,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             }
             // set Location of each Box: 2 rows
-            // Problems remaining: Print all classes ,which is independent , on the left
             int count=0;
             int evenDistance=0;
             Point evenPoint=new Point();
@@ -193,39 +196,44 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             e.printStackTrace();
         }   
     }
+    
+    public void zoomIn(){
+        ConstantAtribute.zoomIn();
+        updateListDrawBox(true);
 
+        getTopLevelAncestor().repaint();
+        for(DrawBox index: MainPanel.getListDrawBox()){
+            index.setBounds(index.getBox().getRec());
+            index.repaint();
+            index.removeAll();
+            index.revalidate();
+            index.addContent();
+        }        
+    }
+    
+    public void zoomOut(){
+        ConstantAtribute.zoomOut();
+        updateListDrawBox(false);
+        getTopLevelAncestor().repaint();
+        for(DrawBox index : MainPanel.getListDrawBox()){
+            index.setBounds(index.getBox().getRec());
+            index.repaint();
+            index.removeAll();
+            index.revalidate();
+            index.addContent();
+        }
+    }
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         if(SwingUtilities.isLeftMouseButton(e)){
-            if(e.getClickCount() == 2){
-                ConstantAtribute.zoomIn();
-                updateListDrawBox(true);
-                
-            //    setComponentZOrder(this, 0); 
-//                MainPanel.getMainPanel().addContent();
-                getTopLevelAncestor().repaint();
-                for(DrawBox index: MainPanel.getListDrawBox()){
-                    index.setBounds(index.getBox().getRec());
-                    index.repaint();
-                    index.removeAll();
-                    index.revalidate();
-                    index.addContent();
-                }                
+            if(e.getClickCount() == 1){
+                zoomIn();       
             }
         }
         if(SwingUtilities.isRightMouseButton(e)){
-            if(e.getClickCount() == 2){
-                ConstantAtribute.zoomOut();
-                updateListDrawBox(false);
-            //    setComponentZOrder(this, 0);
-                getTopLevelAncestor().repaint();
-                for(DrawBox index : MainPanel.getListDrawBox()){
-                    index.setBounds(index.getBox().getRec());
-                    index.repaint();
-                    index.removeAll();
-                    index.revalidate();
-                    index.addContent();
-                }
+            if(e.getClickCount() == 1){
+                zoomOut();
             }
         }
     }

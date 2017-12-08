@@ -27,7 +27,6 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         return box;
     }
     
-    
     DrawBox(Box box){
         super();
         this.box=box;
@@ -42,7 +41,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
 @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.yellow);
+        g.setColor(Color.LIGHT_GRAY);
         Rectangle rec=box.getRec();
         int x =0;
         int y = 0;
@@ -73,7 +72,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         add(name);
         
         // type Of Node
-        JLabel type=new JLabel(data.getTypeOfNode(),JLabel.CENTER);
+        JLabel type=new JLabel("< "+data.getTypeOfNode()+" >",JLabel.CENTER);
         type.setFont(new Font(type.getFont().getName(),Font.ITALIC,contentSize));
         type.setToolTipText(data.getTypeOfNode());
         addMouse(type);
@@ -83,7 +82,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         // attribute
         
         for(int i=0;i<data.getVariables().size();i++){
-            String var=data.getVariables().get(i).getVariable();
+            String var="  "+data.getVariables().get(i).getVariable();
             JLabel varLabel=new JLabel(var);
             varLabel.setFont(new Font(varLabel.getFont().getName(),Font.PLAIN,contentSize));
             addMouse(varLabel);
@@ -92,7 +91,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         }
         // methods and constructors
         for(int i=0;i<data.getConstructors().size();i++){
-            String Cons=data.getConstructors().get(i).getConstructor();
+            String Cons="  "+data.getConstructors().get(i).getConstructor();
             JLabel ConsLabel=new JLabel(Cons);
             ConsLabel.setFont(new Font(ConsLabel.getFont().getName(),Font.PLAIN,contentSize));
             addMouse(ConsLabel);
@@ -100,7 +99,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
             add(ConsLabel);
         }
         for(int i=0;i<data.getMethods().size();i++){
-            String method=data.getMethods().get(i).getMethod();
+            String method="  "+data.getMethods().get(i).getMethod();
             JLabel methodLabel=new JLabel(method);
             methodLabel.setFont(new Font(methodLabel.getFont().getName(),Font.PLAIN,contentSize));
             addMouse(methodLabel);
