@@ -7,6 +7,8 @@ package Analyze;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,22 +21,14 @@ public class AnalyzeFile {
     
     public AnalyzeFile(){};
     
-    public AnalyzeFile(String filePath) throws FileNotFoundException{
+    public AnalyzeFile(String filePath){
         readAllFilesInFolder(filePath); 
     }
-    
-    public static void main(String[] args) throws FileNotFoundException{
-        AnalyzeFile exe = new AnalyzeFile("data");
-        for(NodeInfo index : listNode.values()){
-            index.printDetails();
-        }
-    }
-
     public static HashMap<String, NodeInfo> getListNode() {
         return listNode;
     }
     
-    public void readAllFilesInFolder(String folderPath) throws FileNotFoundException{
+    public void readAllFilesInFolder(String folderPath){
         File folder = new File(folderPath);
         File[] listFiles = folder.listFiles();
         for (File file : listFiles) {
@@ -47,9 +41,14 @@ public class AnalyzeFile {
         }
     }
     
-    public void readFile(String filePath) throws FileNotFoundException{
+    public void readFile(String filePath){
         String str = new String();
-        FileInputStream inp = new FileInputStream(filePath);
+        FileInputStream inp = null;
+        try {
+            inp = new FileInputStream(filePath);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AnalyzeFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Scanner scanner = new Scanner(inp);
         while(scanner.hasNextLine()){
             str += scanner.nextLine() + "\n";
@@ -123,7 +122,7 @@ public class AnalyzeFile {
             subString = className + subString;
             node.getRelationship(node, subString);
             listNode.put(node.getNameOfNode(), node);
-            System.out.println(subString);
+            
         }
     }
     

@@ -7,11 +7,17 @@ package GUI;
 
 import Analyze.NodeInfo;
 import Analyze.Variable;
+import Coefficient.Constants;
 import java.awt.Rectangle;
 
 /**
  *
  * @author Administrator
+ */
+
+/**
+ *
+ * @author Tung Duong
  */
 public class Box {
     private Rectangle rec;
@@ -21,7 +27,7 @@ public class Box {
     public Box(NodeInfo data){
         this.data=data;
         rec=new Rectangle();
-        this.rec.setSize(250, setHeight());
+        this.rec.setSize(Constants.getColumnWidth(), setHeight());
         
     
     }
@@ -42,7 +48,7 @@ public class Box {
     public int setHeight(){
         int Height=0;
         Height=data.getConstructors().size()+data.getMethods().size()+data.getVariables().size()+2;
-        return Height*20;
+        return Height*Constants.getRowHeight();
     }
 
     public NodeInfo getData() {

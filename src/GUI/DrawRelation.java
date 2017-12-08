@@ -30,7 +30,6 @@ public class DrawRelation {
     public DrawRelation(HashMap<String, Box> listBox) {
         this.listBox = listBox;
         setArrowHead();
-
     }
 
     public void setArrowHead() {
@@ -68,12 +67,8 @@ public class DrawRelation {
                         draw2WayAssociation(g,index,tmp);
                     else draw1WayAssociation(g,index,tmp);
                 }
-            }
-            
-            
-        }
-        
-        
+            }    
+        }   
     }
     
     public void draw2WayAssociation(Graphics g,Box child,Box father){
@@ -100,9 +95,7 @@ public class DrawRelation {
             Point2D.Double point=getIntersectionPoint(line, father.getRec());
             Line2D.Double myLine=new Line2D.Double(line.x1,line.y1,point.getX(),point.getY());
             g2.draw(myLine);  
-            drawVectorHead(g,myLine);
-            
-            
+            drawVectorHead(g,myLine);   
         } catch (Exception e) {
             return;
         }
@@ -249,7 +242,6 @@ public class DrawRelation {
             double yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
             p = new Point2D.Double(xi, yi);
-
         }
         return p;
     }
