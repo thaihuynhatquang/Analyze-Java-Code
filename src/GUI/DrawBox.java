@@ -49,8 +49,6 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         int height = rec.height;
         g.drawRect(x, y, width, height);
         g.fillRect(x, y, width, height);
-        
-       
     }
     private void addMouse(JLabel label){
         label.addMouseListener(this);

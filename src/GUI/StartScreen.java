@@ -3,6 +3,8 @@ package GUI;
 import Analyze.AnalyzeFile;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.border.*;
@@ -146,7 +148,15 @@ public class StartScreen extends JFrame{
                 scroller.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(final MouseWheelEvent e) {
-                        if (e.isShiftDown()) {
+                        if(e.isControlDown()){
+                            if (e.getWheelRotation() < 0) {
+                                //zoom in
+                                MainPanel.getMainPanel().zoomIn();
+                            } else {
+                                //zoom out (amount)
+                                MainPanel.getMainPanel().zoomOut();
+                            }
+                        }else if (e.isShiftDown()) {
                             // Horizontal scrolling
                             Adjustable adj = scroller.getHorizontalScrollBar();
                             int scroll = e.getUnitsToScroll() * adj.getBlockIncrement();

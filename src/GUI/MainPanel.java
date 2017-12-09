@@ -48,7 +48,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             listDrawBox.clear();
             AnalyzeFile.listNode.clear();
             temp = folderPath;
-        }else System.out.println("HI");
+        }
         setLayout(null);
         setListBox(folderPath);
         setListDrawBox();
