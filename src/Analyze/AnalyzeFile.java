@@ -77,6 +77,7 @@ public class AnalyzeFile {
         sourceCode = sourceCode.replaceAll("\\](?=\\w)","\\] ");
         sourceCode = sourceCode.replaceAll(">(?=\\w)","> ");
         sourceCode = sourceCode.replaceAll(",\\s(?=\\w)",",");
+        sourceCode = sourceCode.replaceAll("\\{\\}","{ }");
         sourceCode = sourceCode.replaceAll("(?!\\w)\\s,",",");
         return sourceCode;
     }

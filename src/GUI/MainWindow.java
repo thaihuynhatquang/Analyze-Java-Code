@@ -12,8 +12,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainWindow{
     public static void main(String[] args) {
          try{
-            com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Default", "", "QDH TEAM");
-            UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+//            com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Green", "", "QDH TEAM");
+            com.jtattoo.plaf.graphite.GraphiteLookAndFeel.setTheme("Green-Medium-Font", "", "QDH TEAM");
+//            UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
         } 
         catch(ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e){ 
             System.out.println(e);

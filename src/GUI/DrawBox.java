@@ -38,10 +38,11 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
     public void updateDrawBox(Box box){
         this.box=box;
     }
-@Override
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.LIGHT_GRAY);
+        Color color = new Color(27,94,32);
+        g.setColor(color);
         Rectangle rec=box.getRec();
         int x =0;
         int y = 0;
@@ -49,6 +50,15 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         int height = rec.height;
         g.drawRect(x, y, width, height);
         g.fillRect(x, y, width, height);
+        g.setColor(Color.WHITE);
+        int tmpHeight=2*Constants.getRowHeight();
+        y=y+tmpHeight;
+        g.drawLine(x, y, x+Constants.getColumnWidth(), y);
+        if(box.getData().getVariables().size()>0){
+            tmpHeight=box.getData().getVariables().size()*Constants.getRowHeight();
+            y=y+tmpHeight;
+            g.drawLine(x, y, x+Constants.getColumnWidth(), y);
+        }
     }
     private void addMouse(JLabel label){
         label.addMouseListener(this);
@@ -56,25 +66,28 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
     }
     
     void addContent(){
-        setLayout(new GridLayout(box.getRec().height/ConstantAtribute.getRowHeight(),1));
+        Color color = new Color(232,245,233);
+        setLayout(new GridLayout(box.getRec().height/Constants.getRowHeight(),1));
         setOpaque(false);
         NodeInfo data=box.getData();
-        int contentSize=ConstantAtribute.getContentSize();
-        
+        int contentSize=Constants.getContentSize();
+        // type Of Node
+        JLabel type=new JLabel("< "+data.getTypeOfNode()+" >",JLabel.CENTER);
+        type.setForeground(color);
+        type.setFont(new Font(type.getFont().getName(),Font.ITALIC,contentSize));
+        type.setToolTipText(data.getTypeOfNode());
+        addMouse(type);
+        add(type);
         // Name of Node
 
         JLabel name=new JLabel(data.getNameOfNode(),JLabel.CENTER);
+        name.setForeground(color);
         name.setFont(new Font(name.getFont().getName(),Font.BOLD,contentSize));
         name.setToolTipText(data.getNameOfNode());
         addMouse(name);
         add(name);
         
-        // type Of Node
-        JLabel type=new JLabel("< "+data.getTypeOfNode()+" >",JLabel.CENTER);
-        type.setFont(new Font(type.getFont().getName(),Font.ITALIC,contentSize));
-        type.setToolTipText(data.getTypeOfNode());
-        addMouse(type);
-        add(type);
+        
         
         
         // attribute
@@ -82,6 +95,7 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         for(int i=0;i<data.getVariables().size();i++){
             String var="  "+data.getVariables().get(i).getVariable();
             JLabel varLabel=new JLabel(var);
+            varLabel.setForeground(color);
             varLabel.setFont(new Font(varLabel.getFont().getName(),Font.PLAIN,contentSize));
             addMouse(varLabel);
             varLabel.setToolTipText(var);
@@ -89,16 +103,18 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
         }
         // methods and constructors
         for(int i=0;i<data.getConstructors().size();i++){
-            String Cons="  "+data.getConstructors().get(i).getConstructor();
-            JLabel ConsLabel=new JLabel(Cons);
-            ConsLabel.setFont(new Font(ConsLabel.getFont().getName(),Font.PLAIN,contentSize));
-            addMouse(ConsLabel);
-            ConsLabel.setToolTipText(Cons);
-            add(ConsLabel);
+            String cons ="  "+data.getConstructors().get(i).getConstructor();
+            JLabel consLabel = new JLabel(cons );
+            consLabel.setForeground(color);
+            consLabel.setFont(new Font(consLabel.getFont().getName(),Font.PLAIN,contentSize));
+            addMouse(consLabel);
+            consLabel.setToolTipText(cons );
+            add(consLabel);
         }
         for(int i=0;i<data.getMethods().size();i++){
             String method="  "+data.getMethods().get(i).getMethod();
             JLabel methodLabel=new JLabel(method);
+            methodLabel.setForeground(color);
             methodLabel.setFont(new Font(methodLabel.getFont().getName(),Font.PLAIN,contentSize));
             addMouse(methodLabel);
             methodLabel.setToolTipText(method);
@@ -108,9 +124,10 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // double click left mouse to zoom in
         if(SwingUtilities.isLeftMouseButton(e)){
             if(e.getClickCount() == 2){
-                ConstantAtribute.zoomIn();
+                Constants.zoomIn();
                 MainPanel.getMainPanel().updateListDrawBox(true);
                 MainPanel.getMainPanel().setComponentZOrder(this, 0); 
                 MainPanel.getMainPanel().addContent();
@@ -125,9 +142,10 @@ public class DrawBox extends JPanel implements MouseListener,MouseMotionListener
                 }                
             }
         }
+        // double click right mouse to zoom out
         if(SwingUtilities.isRightMouseButton(e)){
             if(e.getClickCount() == 2){
-                ConstantAtribute.zoomOut();
+                Constants.zoomOut();
                 MainPanel.getMainPanel().updateListDrawBox(false);
                 MainPanel.getMainPanel().setComponentZOrder(this, 0);
                 getTopLevelAncestor().repaint();

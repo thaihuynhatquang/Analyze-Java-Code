@@ -3,8 +3,6 @@ package GUI;
 import Analyze.AnalyzeFile;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.border.*;
@@ -152,6 +150,7 @@ public class StartScreen extends JFrame{
                             if (e.getWheelRotation() < 0) {
                                 //zoom in
                                 MainPanel.getMainPanel().zoomIn();
+                                
                             } else {
                                 //zoom out (amount)
                                 MainPanel.getMainPanel().zoomOut();

@@ -71,33 +71,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         addContent();
     }
     
-    public void updateListDrawBox(boolean isZoomIn){
-        if(isZoomIn){
-            for(Box index: listBox.values()){
-            index.getRec().x*=ConstantAtribute.getFactor();
-            index.getRec().y*=ConstantAtribute.getFactor();
-            index.getRec().width*=ConstantAtribute.getFactor();
-            index.getRec().height*=ConstantAtribute.getFactor();
-            }}
-        else{
-             for(Box index: listBox.values()){
-            index.getRec().x/=ConstantAtribute.getFactor();
-            index.getRec().y/=ConstantAtribute.getFactor();
-            index.getRec().width/=ConstantAtribute.getFactor();
-            index.getRec().height/=ConstantAtribute.getFactor();
-            }       
-        }           
-
-        int count=0;
-        for(Box index: listBox.values()){
-            listDrawBox.get(count++).updateDrawBox(index);
-        }
-
-
-    }
+    
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); 
+        super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getPreferredSize().width, getPreferredSize().height);
         g.setColor(Color.WHITE);
@@ -132,7 +109,37 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             add(index);
         }
     }
-    
+   
+    public void updateListDrawBox(boolean isZoomIn){
+        if(isZoomIn){
+            
+            for(Box index: listBox.values()){
+                        double tmpX=index.getRec().x*Constants.getFactor();
+                        double tmpY=index.getRec().y*Constants.getFactor();
+                        index.getRec().x=(int)tmpX;
+                        index.getRec().y=(int)tmpY;
+
+                        index.updateRec();
+                        }  
+        }
+        else{
+            for(Box index: listBox.values()){
+                        double tmpX=index.getRec().x/Constants.getFactor();
+                        double tmpY=index.getRec().y/Constants.getFactor();
+                        index.getRec().x=(int)tmpX;
+                        index.getRec().y=(int)tmpY;
+
+                        index.updateRec();
+                        }  
+        }           
+        
+        int count=0;
+        for(Box index: listBox.values()){
+            listDrawBox.get(count++).updateDrawBox(index);
+        }
+        
+
+    }
     public void setListBox(String folderPath) {  
         try {
             temp = folderPath;
@@ -143,13 +150,13 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 listBox.put(index.getNameOfNode(), new Box(index));
 
             }
-            // set Location of each Box: 2 rows
+            // set Location of each Box by 2 rows
             int count=0;
             int evenDistance=0;
             Point evenPoint=new Point();
             Point oddPoint=new Point();
-            int distanceBoxes=ConstantAtribute.getDistanceBoxes();
-            int columnWidth=ConstantAtribute.getColumnWidth();
+            int distanceBoxes=Constants.getDistanceBoxes();
+            int columnWidth=Constants.getColumnWidth();
             for(Box index: listBox.values()){
                 if(0!=count%2){
                     count++;
@@ -198,39 +205,44 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     }
     
     public void zoomIn(){
-        ConstantAtribute.zoomIn();
+        Constants.zoomIn();
         updateListDrawBox(true);
-
         getTopLevelAncestor().repaint();
-        for(DrawBox index: MainPanel.getListDrawBox()){
-            index.setBounds(index.getBox().getRec());
-            index.repaint();
-            index.removeAll();
-            index.revalidate();
-            index.addContent();
-        }        
-    }
-    
-    public void zoomOut(){
-        ConstantAtribute.zoomOut();
-        updateListDrawBox(false);
-        getTopLevelAncestor().repaint();
-        for(DrawBox index : MainPanel.getListDrawBox()){
+        for(DrawBox index: getListDrawBox()){
             index.setBounds(index.getBox().getRec());
             index.repaint();
             index.removeAll();
             index.revalidate();
             index.addContent();
         }
+        
+    }
+    
+    public void zoomOut(){
+        Constants.zoomOut();
+        if(Constants.isAbleToZoomOut()){
+            updateListDrawBox(false);
+            getTopLevelAncestor().repaint();
+            for(DrawBox index : getListDrawBox()){
+                index.setBounds(index.getBox().getRec());
+                index.repaint();
+                index.removeAll();
+                index.revalidate();
+                index.addContent();
+            }
+        }
+        
     }
     
     @Override
     public void mouseClicked(MouseEvent e) {
+        // double click left mouse to zoom in
         if(SwingUtilities.isLeftMouseButton(e)){
             if(e.getClickCount() == 1){
                 zoomIn();       
             }
         }
+        // double click right mouse to zoom out
         if(SwingUtilities.isRightMouseButton(e)){
             if(e.getClickCount() == 1){
                 zoomOut();
